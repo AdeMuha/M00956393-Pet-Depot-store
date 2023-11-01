@@ -27,14 +27,16 @@ var webstore = new Vue({
             description: "A 25 pound bag of irresistible, organic goodness for your cat.",
             price: 2000,
             image: "Cat.jpg",
-            availableInventory: 5,
+            availableInventory: 10,
+            rating: 3,
         },
+        products: products,
         cart:[]
     },
     //Cases
     methods:{
-        addToCart: function(){
-            this.cart.push(this.product.id);
+        addToCart(product){
+            this.cart.push(product.id);
         },
         showCheckout(){
             this.showProduct = this.showProduct ? false : true;
@@ -42,6 +44,18 @@ var webstore = new Vue({
         submitForm(){
             alert('Order submitted!');
         },
+        canAddToCart(product) {
+            return product.availableInventory > this.cartCount(product.id);
+        },
+        cartCount(id){
+        let count = 0;
+        for(let i = 0; i < this.cart.length; i++) {
+            if (this.cart[i] === id) {
+                count++;
+            }
+        }
+        return count;
+    }
     },
     computed:{
         cartItemCount: function(){
@@ -49,6 +63,9 @@ var webstore = new Vue({
         },
         canAddToCart: function() {
             return this.product.availableInventory > this.cartItemCount;
+        },
+        itemsLeft() {
+            return this.product.availableInventory - this.cartItemCount;
         }
-    }
+    },
 })
