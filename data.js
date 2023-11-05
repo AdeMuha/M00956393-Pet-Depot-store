@@ -66,6 +66,14 @@ var webstore = new Vue({
         },
         itemsLeft() {
             return this.product.availableInventory - this.cartItemCount;
+        },
+        sortedProducts() {
+            function compare(a, b){
+                if (a.price > b.price) return 1;
+                if (a.price < b.price) return -1;
+                return 0;
+            }
+            return this.products.sort(compare);
         }
     },
 })
